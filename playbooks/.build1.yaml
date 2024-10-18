@@ -1,0 +1,9 @@
+---
+- name: Simple Ansible Play
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Ensure Local User Has SSH key Pair
+      ansible.builtin.user:
+        name: pslearner
+        generate_ssh_key: true

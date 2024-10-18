@@ -1,0 +1,30 @@
+---
+- name: Simple Ansible Play
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Ensure Local User Has SSH key Pair
+      ansible.builtin.user:
+        name: pslearner
+        generate_ssh_key: true
+- name: Ansible Manage Ubuntu Hosts
+  hosts: "{{ hosts }}"
+  gather_facts: false
+  tasks:
+    - name: Ensure Key Based Authetication Works to Remote Hosts
+      ansible.posix.authorized_key:
+        user: pslearner
+        manage_dir: true
+        key: "{{ lookup('file', '/home/pslearner/.ssh/id_rsa.pub') }}"
+    - name: Create Project Directory
+      become: true
+      ansible.builtin.file:
+        path: /projects/project1
+        state: directory
+    - name: Ensure PermitRootLogin is set to no in sshd_config
+      become: yes
+      ansible.builtin.lineinfile:
+        path: /etc/ssh/sshd_config
+        insertafter: '^#?PermitRootLogin'
+        line: 'PermitRootLogin no'
+        regexp: ^PermitRootLogin .*

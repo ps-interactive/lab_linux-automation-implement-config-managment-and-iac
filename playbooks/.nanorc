@@ -1,0 +1,8 @@
+## Set tab size to 2 spaces
+set tabsize 2
+
+## Convert tabs to spaces
+set tabstospaces
+
+## Enable auto-indentation
+set autoindent
